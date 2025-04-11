@@ -77,10 +77,6 @@ def main():
         print(f"An error occured while fetching data "
               f"from the API: {req.status}")
             
-    # TODO
-    ## Cache fetched data to improve performance
-    ## Explore GitHub API to fetch other data
-    
     
 def list_events(e):
     for event, desc in e.items():
