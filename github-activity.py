@@ -1,7 +1,9 @@
 import argparse
+import json
 import re
-import requests
 import sys
+from urllib.error import URLError
+from urllib.request import urlopen
 from constants import EVENTS
 
 
@@ -55,26 +57,30 @@ def main():
     if not re.fullmatch(r"[a-zA-Z0-9\-]*", username):
         sys.exit("Invalid username")
     
-    response = requests.get(
-        f"https://api.github.com/users/{username}/events"
-        )
+    url = f"https://api.github.com/users/{username}/events"
     
-    match response.status_code:
-        case 200:
-            data = response.json() # -> list
-            if args.filter is not None:
-                data = [r for r in data if r["type"] == args.filter]
-            if args.limit is not None:
-                data = [r for r in data][:args.limit]
-            for e in data:
-                print(f"- {match_event(e)}")
-        case _:
-            print(f"An error occured while fetching data "
-                  f"from the API: {response.status_code}")
+    try:
+        with urlopen(url) as r:
+            req = r
+            data = json.load(r)
+    except URLError:
+        sys.exit(f"An error occurred: {URLError.reason}")
+
+    if req.status == 200:
+        if args.filter is not None:
+            data = [r for r in data if r["type"] == args.filter]
+        if args.limit is not None:
+            data = [r for r in data][:args.limit]
+        for e in data:
+            print(f"- {match_event(e)}")
+    else:
+        print(f"An error occured while fetching data "
+              f"from the API: {req.status}")
             
     # TODO
     ## Cache fetched data to improve performance
     ## Explore GitHub API to fetch other data
+    
     
 def list_events(e):
     for event, desc in e.items():
