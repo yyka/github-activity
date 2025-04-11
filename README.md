@@ -3,9 +3,9 @@ A simple CLI program to fetch the recent activity of a GitHub user, built in Pyt
 
 For more info: https://roadmap.sh/projects/github-user-activity
 
-Usage: 'github_activity.py [-h | --help] [-e | --events] [<username> [-f <filter>] [-l <limit>]]'
+Usage: `github_activity.py [-h | --help] [-e | --events] [<username> [-f <filter>] [-l <limit>]]`
 
-'''
+```
 # show a list of commands
 github_activity.py --help
 
@@ -23,9 +23,9 @@ github_activity.py <username> -l <limit>
 
 # show yyka's last 3 commits
 github_activity.py yyka -l 3 -f PushEvent
-'''
+```
 
 <details>
 <summary>Misc</summary>
-Total time taken: 10h
+Total time taken: 11h
 </details>
